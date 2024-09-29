@@ -9,7 +9,7 @@ pipeline {
             }
         }
         stage('Test') {
-            ssteps {
+            steps {
                 dir('HealthyRecipe') { // Add this line
                     sh 'npm test'
                 }
