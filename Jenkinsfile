@@ -3,15 +3,17 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                dir('HealthyRecipe') { // Add this line
+                dir('HealthyRecipe') {  // Ensure Jenkins navigates to the correct directory
                     sh 'npm install'
                 }
             }
         }
         stage('Test') {
             steps {
-                sh 'npm test'
+                dir('HealthyRecipe') {  // Run npm test from the same directory
+                    sh 'npm test'
+                }
             }
-         }
+        }
     }
 }
