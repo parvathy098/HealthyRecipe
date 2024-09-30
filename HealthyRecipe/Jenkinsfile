@@ -39,15 +39,16 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                dir('HealthyRecipe') {
-                    script {
-                        // Example: Run Docker to deploy the container
-                        sh 'docker run -d -p 3002:3002 parvathykrishna/healthy-recipe:latest'
-                    }
-                }
+    steps {
+        dir('HealthyRecipe') {
+            script {
+                // Build and deploy using Docker Compose
+                sh 'docker-compose up -d --build'
             }
         }
+    }
+}
+
         stage('Release') {
             steps {
                 dir('HealthyRecipe') {
