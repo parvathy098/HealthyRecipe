@@ -15,5 +15,13 @@ pipeline {
                 }
             }
         }
+        stage('Code Quality') {
+    steps {
+        withSonarQubeEnv('SonarQubeServer') {
+            sh 'sonar-scanner'
+        }
+    }
+}
+
     }
 }
