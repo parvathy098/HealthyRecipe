@@ -17,6 +17,16 @@ pipeline {
                 }
             }
         }
+        stage('Code Quality Analysis') {
+    steps {
+        dir('HealthyRecipe') {
+            script {
+                sh 'sonar-scanner' 
+            }
+        }
+    }
+}
+
 
         stage('Test') {
             steps {
