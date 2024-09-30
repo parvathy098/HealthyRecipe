@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/parvathy098/HealthyRecipe.git'
+                git branch: 'master', url: 'https://github.com/BinilTomJose1278/NotesApp.git'
             }
         }
 
@@ -12,7 +12,7 @@ pipeline {
             steps {
                 dir('HealthyRecipe') {
                     script {
-                        sh 'docker build -t parvathykrishna/healthy-recipe:latest .'
+                        sh 'docker build -t biniltomjose12780/nodejs-image-demo .'
                     }
                 }
             }
