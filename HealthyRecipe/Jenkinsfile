@@ -43,7 +43,7 @@ pipeline {
                 dir('HealthyRecipe') {
                     script {
                         // Example: Run Docker to deploy the container
-                        sh 'docker run -d -p 3077:3077 parvathykrishna/healthy-recipe:latest'
+                        sh 'docker run -d -p 3001:3001 parvathykrishna/healthy-recipe:latest'
                     }
                 }
             }
