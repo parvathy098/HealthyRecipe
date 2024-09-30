@@ -1,0 +1,12 @@
+version: '3.8'  # Specify the version of Docker Compose
+
+services:
+  healthy-recipe:  # Service name
+    build: .  # Build the image from the Dockerfile in the current directory
+    ports:
+      - "3056:3055"  # Map port 3055 on the host to port 3055 in the container
+    environment:
+      - NODE_ENV=production  # Set environment variable (optional)
+    volumes:
+      - .:/usr/src/app  # Mount the current directory to /usr/src/app in the container
+    restart: unless-stopped  # Restart policy
