@@ -38,6 +38,16 @@ pipeline {
                 }
             }
         }
+        stage('Release') {
+            steps {
+                dir('HealthyRecipe') {
+                    script {
+                        // Push the Docker image to Docker Hub
+                        sh 'docker push parvathykrishna/healthy-recipe:latest'
+                    }
+                }
+            }
+        }
     }
 }
 
