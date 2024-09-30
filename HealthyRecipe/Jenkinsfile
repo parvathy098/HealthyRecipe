@@ -1,31 +1,55 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = "parvathykrishna/healthy-recipe"
-        IMAGE_VERSION = "latest"
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/parvathy098/HealthyRecipe.git'
+                git 'https://github.com/parvathy098/HealthyRecipe.git'
             }
         }
-
+        
         stage('Build') {
             steps {
-                script {
-                    // Build Docker image
-                    sh 'docker build -t ${IMAGE_NAME}:${IMAGE_VERSION} .'
+                dir('HealthyRecipe') {  // Navigate to the HealthyRecipe folder
+                    script {
+                        // Build the Docker image
+                        sh 'docker build -t parvathykrishna/healthy-recipe:latest .'
+                    }
                 }
             }
         }
-    }
+        
+        stage('Test') {
+            steps {
+                dir('HealthyRecipe') {  // Stay within the HealthyRecipe directory
+                    script {
+                        // Add your test commands here (e.g., npm, mocha, etc.)
+                        sh 'npm test'  // Example for Node.js testing
+                    }
+                }
+            }
+        }
 
-    post {
-        always {
-            echo 'Pipeline execution finished.'
+        stage('Deploy') {
+            steps {
+                dir('HealthyRecipe') {
+                    script {
+                        // Deploy your application (if applicable)
+                        // Add commands here to deploy your Docker container or app
+                    }
+                }
+            }
+        }
+
+        stage('Release') {
+            steps {
+                dir('HealthyRecipe') {
+                    script {
+                        // Release stage (e.g., push the Docker image to a registry)
+                        sh 'docker push parvathykrishna/healthy-recipe:latest'
+                    }
+                }
+            }
         }
     }
 }
