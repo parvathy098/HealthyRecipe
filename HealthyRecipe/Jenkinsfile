@@ -10,10 +10,10 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir('HealthyRecipe') {
+            
                     script {
                         sh 'docker build -t biniltomjose12780/nodejs-image-demo .'
-                    }
+                    
                 }
             }
         }
