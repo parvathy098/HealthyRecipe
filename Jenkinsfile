@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/parvathy098/healthy-recipe.git'
+                git branch: 'main', url: 'https://github.com/parvathy098/HealthyRecipe.git'
             }
         }
 
