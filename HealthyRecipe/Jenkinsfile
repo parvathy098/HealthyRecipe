@@ -10,10 +10,20 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir('HealthyRecipe') {  // Navigate to the HealthyRecipe directory
+                dir('HealthyRecipe') {
                     script {
-                        // Build the Docker image
                         sh 'docker build -t parvathykrishna/healthy-recipe:latest .'
+                    }
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                dir('HealthyRecipe') {
+                    script {
+                        // Example: Run Node.js tests or other tests relevant to your project
+                        sh 'npm test'  // Replace with your test framework command
                     }
                 }
             }
