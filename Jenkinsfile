@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout code from your Git repository
-                git branch: 'main', url: 'https://github.com/parvathykrishna/healthy-recipe.git'
+                git branch: 'main', url: 'https://github.com/parvathy098/HealthyRecipe.git'
             }
         }
     }
