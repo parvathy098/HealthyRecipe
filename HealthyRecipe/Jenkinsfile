@@ -49,13 +49,12 @@ pipeline {
     }
 }
 
-        stage('Release') {
+       stage('Release') {
             steps {
-                dir('HealthyRecipe') {
-                    script {
-                        // Push the Docker image to Docker Hub
-                        sh 'docker push parvathykrishna/healthy-recipe:latest'
-                    }
+                script {
+                    def octopus = new OctopusDeployClient('https://parvathy.octopus.app', 'API-JZE0JBIJQFNB1SQ1XRP62CNKZGQUX7N4')
+                    octopus.createRelease('healthyRecipe', '1.0.0') // Replace with your project name and version
+                    octopus.deploy('healthyRecipe', 'Production') // Deploy to production
                 }
             }
         }
