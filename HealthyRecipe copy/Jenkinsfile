@@ -1,0 +1,68 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/parvathy098/HealthyRecipe.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                dir('HealthyRecipe') {
+                    script {
+                        sh 'docker build -t parvathykrishna/healthy-recipe:latest .'
+                    }
+                }
+            }
+        }
+        stage('Code Quality Analysis') {
+    steps {
+        dir('HealthyRecipe') {
+            script {
+                sh 'sonar-scanner' 
+            }
+        }
+    }
+}
+
+
+        stage('Test') {
+            steps {
+                dir('HealthyRecipe') {
+                    script {
+                        sh 'npm test'  // Replace with your test framework command
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+    steps {
+        dir('HealthyRecipe') {
+            script {
+                // Build and deploy using Docker Compose
+                sh 'docker-compose up -d --build'
+            }
+        }
+    }
+}
+
+       stage('Release') {
+    steps {
+        script {
+            // Create a new release in Octopus Deploy
+            octopusCreateRelease(
+                serverId: 'octopus',  // This is the Server ID you configured in Jenkins
+                project: 'healthyRecipe',            // Replace with your actual project name in Octopus
+                version: '1.0.0',                   // Use the appropriate versioning scheme
+                releaseNotes: 'Automated Release from Jenkins', // Optional: Add release notes
+                environment: 'Production'           // The target environment (e.g., Production)
+            )
+        }
+    }
+}
+
+    }
+}
