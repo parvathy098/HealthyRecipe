@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        OCTO_CLI = tool name: 'OctopusCLI'  // This matches the name you set in Global Tool Configuration
+    }
+
     
     stages {
         stage('Checkout') {
@@ -48,21 +52,22 @@ pipeline {
         }
     }
 }
-
-       stage('Release') {
-    steps {
-        script {
-            // Create a new release in Octopus Deploy
-            octopusCreateRelease(
-                serverId: 'octopus',  // This is the Server ID you configured in Jenkins
-                project: 'healthyRecipe',            // Replace with your actual project name in Octopus
-                version: '1.0.0',                   // Use the appropriate versioning scheme
-                releaseNotes: 'Automated Release from Jenkins', // Optional: Add release notes
-                environment: 'Production'           // The target environment (e.g., Production)
-            )
+stages {
+        stage('Release') {
+            steps {
+                script {
+                    // Create Octopus release using the CLI
+                    octopusCreateRelease(
+                        toolId: 'OctopusCLI',  // Refer to the Octopus CLI you set up
+                        project: 'healthyRecipe',
+                        version: '1.0.0',  // You can set the appropriate version here
+                        releaseNotes: 'New release for healthyRecipe',
+                        deployTo: 'Production'  // Specify the environment to deploy
+                    )
+                }
+            }
         }
     }
-}
 
     }
 }
