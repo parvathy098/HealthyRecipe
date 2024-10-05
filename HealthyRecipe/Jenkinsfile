@@ -2,8 +2,7 @@ pipeline {
     agent any
     environment {
         OCTO_CLI = tool name: 'OctopusCLI'  // This matches the name you set in Global Tool Configuration
-        OCTOPUS_SERVER = 'https://your-octopus-server.com'
-        OCTOPUS_API_KEY = credentials('OCTOPUS_API_KEY')
+       
     }
 
     stages {
