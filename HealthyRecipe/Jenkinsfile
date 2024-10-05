@@ -2,9 +2,10 @@ pipeline {
     agent any
     environment {
         OCTO_CLI = tool name: 'OctopusCLI'  // This matches the name you set in Global Tool Configuration
+        OCTOPUS_SERVER = 'https://your-octopus-server.com'
+        OCTOPUS_API_KEY = credentials('OCTOPUS_API_KEY')
     }
 
-    
     stages {
         stage('Checkout') {
             steps {
@@ -22,15 +23,14 @@ pipeline {
             }
         }
         stage('Code Quality Analysis') {
-    steps {
-        dir('HealthyRecipe') {
-            script {
-                sh 'sonar-scanner' 
+            steps {
+                dir('HealthyRecipe') {
+                    script {
+                        sh 'sonar-scanner'
+                    }
+                }
             }
         }
-    }
-}
-
 
         stage('Test') {
             steps {
@@ -43,31 +43,30 @@ pipeline {
         }
 
         stage('Deploy') {
-    steps {
-        dir('HealthyRecipe') {
-            script {
-                // Build and deploy using Docker Compose
-                sh 'docker-compose up -d --build'
+            steps {
+                dir('HealthyRecipe') {
+                    script {
+                        // Build and deploy using Docker Compose
+                        sh 'docker-compose up -d --build'
+                    }
+                }
             }
         }
-    }
-}
-stages {
-        stage('Release') {
-            steps {
-                script {
-                    // Create Octopus release using the CLI
-                    octopusCreateRelease(
+        stages {
+            stage('Release') {
+                steps {
+                    script {
+                        // Create Octopus release using the CLI
+                        octopusCreateRelease(
                         toolId: 'OctopusCLI',  // Refer to the Octopus CLI you set up
                         project: 'healthyRecipe',
                         version: '1.0.0',  // You can set the appropriate version here
                         releaseNotes: 'New release for healthyRecipe',
                         deployTo: 'Production'  // Specify the environment to deploy
                     )
+                    }
                 }
             }
         }
-    }
-
     }
 }
