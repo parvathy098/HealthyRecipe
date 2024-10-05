@@ -52,7 +52,6 @@ pipeline {
                 }
             }
         }
-        stages {
             stage('Release') {
                 steps {
                     script {
@@ -69,4 +68,4 @@ pipeline {
             }
         }
     }
-}
+
