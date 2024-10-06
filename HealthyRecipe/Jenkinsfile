@@ -1,6 +1,10 @@
 pipeline {
     agent any
-    
+    environment {
+        OCTO_CLI = tool name: 'OctopusCLI'  // This matches the name you set in Global Tool Configuration
+       
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -18,15 +22,14 @@ pipeline {
             }
         }
         stage('Code Quality Analysis') {
-    steps {
-        dir('HealthyRecipe') {
-            script {
-                sh 'sonar-scanner' 
+            steps {
+                dir('HealthyRecipe') {
+                    script {
+                        sh 'sonar-scanner'
+                    }
+                }
             }
         }
-    }
-}
-
 
         stage('Test') {
             steps {
@@ -39,17 +42,16 @@ pipeline {
         }
 
         stage('Deploy') {
-    steps {
-        dir('HealthyRecipe') {
-            script {
-                // Build and deploy using Docker Compose
-                sh 'docker-compose up -d --build'
+            steps {
+                dir('HealthyRecipe') {
+                    script {
+                        // Build and deploy using Docker Compose
+                        sh 'docker-compose up -d --build'
+                    }
+                }
             }
         }
-    }
-}
-
-        stage('Release') {
+            stage('Release') {
             steps {
                 dir('HealthyRecipe') {
                     script {
@@ -59,5 +61,6 @@ pipeline {
                 }
             }
         }
+
+        }
     }
-}
